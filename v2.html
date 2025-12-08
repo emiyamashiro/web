@@ -1,0 +1,2957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthropic 组件展示页面 | Component Showcase</title>
+  
+  <!-- 字体引入 - 使用接近Styrene和Tiempos的开源替代 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ========================================
+       Anthropic Design System - CSS Variables
+       ======================================== */
+    :root {
+      /* === 颜色系统 Color System === */
+      /* Slate 系列 - 深色调 */
+      --swatch--slate-dark: #191919;
+      --swatch--slate-medium: #262625;
+      --swatch--slate-light: #40403E;
+      
+      /* Cloud 系列 - 中性灰 */
+      --swatch--cloud-dark: #666663;
+      --swatch--cloud-medium: #9191BD;
+      --swatch--cloud-light: #BFBFBA;
+      
+      /* Ivory 系列 - 浅色调 */
+      --swatch--ivory-dark: #E5E4DF;
+      --swatch--ivory-medium: #F0F0EB;
+      --swatch--ivory-light: #FAFAF7;
+      
+      /* 暖色系 - Warm Tones */
+      --swatch--book-cloth: #CC785C;
+      --swatch--kraft: #D4A27F;
+      --swatch--manilla: #EBDBBC;
+      
+      /* 功能色 */
+      --swatch--black: #000000;
+      --swatch--white: #FFFFFF;
+      --swatch--focus: #01A4F2;
+      --swatch--error: #EF4C43;
+      --swatch--success: #2E7D32;
+      --swatch--warning: #ED6C02;
+      
+      /* === 字体系统 Typography === */
+      --font--sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font--serif: 'Libre Baskerville', Georgia, serif;
+      --font--mono: 'JetBrains Mono', 'SF Mono', monospace;
+      
+      /* 字号层级 */
+      --font-size--display-xxxl: 6rem;
+      --font-size--display-xxl: 4.5rem;
+      --font-size--display-xl: 4rem;
+      --font-size--display-l: 3rem;
+      --font-size--display-m: 2rem;
+      --font-size--display-s: 1.5rem;
+      --font-size--display-xs: 1.25rem;
+      
+      --font-size--paragraph-l: 1.5rem;
+      --font-size--paragraph-m: 1.25rem;
+      --font-size--paragraph-s: 1.125rem;
+      --font-size--paragraph-xs: 1rem;
+      
+      --font-size--detail-xl: 1.25rem;
+      --font-size--detail-l: 1.125rem;
+      --font-size--detail-m: 1rem;
+      --font-size--detail-s: 0.875rem;
+      --font-size--detail-xs: 0.75rem;
+      
+      /* 行高 */
+      --line-height--tight: 1.1;
+      --line-height--normal: 1.4;
+      --line-height--relaxed: 1.5;
+      
+      /* === 间距系统 Spacing === */
+      --space--1: 0.25rem;
+      --space--2: 0.5rem;
+      --space--3: 0.75rem;
+      --space--4: 1rem;
+      --space--5: 1.5rem;
+      --space--6: 2rem;
+      --space--7: 2.5rem;
+      --space--8: 3rem;
+      --space--9: 4rem;
+      --space--10: 5rem;
+      --space--11: 6rem;
+      --space--12: 10rem;
+      
+      /* Gap */
+      --gap--xs: 0.5rem;
+      --gap--s: 1rem;
+      --gap--m: 1.5rem;
+      --gap--l: 2rem;
+      --gap--xl: 4rem;
+      
+      /* === 布局系统 Layout === */
+      --container--main: 89.5rem;
+      --container--small: 56.25rem;
+      --site--margin: 64px;
+      --site--gutter: 2rem;
+      
+      /* 圆角 */
+      --radius--small: 0.25rem;
+      --radius--main: 0.5rem;
+      --radius--large: 1rem;
+      --radius--round: 100vw;
+      
+      /* === 阴影系统 Shadows === */
+      --shadow--sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow--m: 0 2px 2px rgba(0,0,0,0.03), 0 4px 4px rgba(0,0,0,0.05), 0 16px 24px rgba(0,0,0,0.1);
+      --shadow--l: 0 4px 3px rgba(0,0,0,0.05), 0 10px 8px rgba(0,0,0,0.08), 0 19px 15px rgba(0,0,0,0.1), 0 34px 27px rgba(0,0,0,0.1);
+      
+      /* === 过渡动效 Transitions === */
+      --transition--fast: 0.15s ease;
+      --transition--normal: 0.2s ease;
+      --transition--slow: 0.3s ease;
+      
+      /* 焦点 */
+      --focus--width: 0.125rem;
+      --focus--offset: 0.25rem;
+      
+      /* 导航高度 */
+      --nav--height: 4rem;
+      
+      /* 侧边栏宽度 */
+      --sidebar--width: 280px;
+    }
+
+    /* ========================================
+       基础重置 Base Reset
+       ======================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font--sans);
+      font-size: var(--font-size--paragraph-xs);
+      line-height: var(--line-height--normal);
+      color: var(--swatch--slate-dark);
+      background-color: var(--swatch--ivory-light);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color var(--transition--normal);
+    }
+
+    a:hover {
+      color: var(--swatch--book-cloth);
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    /* ========================================
+       布局结构 Layout Structure
+       ======================================== */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* 侧边导航 */
+    .sidebar {
+      width: var(--sidebar--width);
+      background-color: var(--swatch--white);
+      border-right: 1px solid var(--swatch--ivory-dark);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: var(--space--5) var(--space--5);
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space--3);
+    }
+
+    .sidebar-logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .sidebar-logo-text {
+      font-weight: 600;
+      font-size: var(--font-size--detail-l);
+      color: var(--swatch--slate-dark);
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: var(--space--4) 0;
+      overflow-y: auto;
+    }
+
+    .nav-section {
+      margin-bottom: var(--space--4);
+    }
+
+    .nav-section-title {
+      padding: var(--space--2) var(--space--5);
+      font-size: var(--font-size--detail-xs);
+      font-weight: 600;
+      color: var(--swatch--cloud-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      padding: var(--space--2) var(--space--5);
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--slate-light);
+      transition: all var(--transition--normal);
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background-color: var(--swatch--ivory-medium);
+      color: var(--swatch--slate-dark);
+    }
+
+    .nav-item.active {
+      background-color: var(--swatch--ivory-medium);
+      color: var(--swatch--book-cloth);
+      border-left-color: var(--swatch--book-cloth);
+      font-weight: 500;
+    }
+
+    .nav-item-badge {
+      margin-left: auto;
+      padding: 0.125rem 0.5rem;
+      font-size: var(--font-size--detail-xs);
+      background-color: var(--swatch--ivory-dark);
+      border-radius: var(--radius--round);
+      color: var(--swatch--cloud-dark);
+    }
+
+    .nav-item-badge.primary {
+      background-color: var(--swatch--book-cloth);
+      color: var(--swatch--white);
+    }
+
+    /* 主内容区 */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar--width);
+      min-height: 100vh;
+    }
+
+    /* 顶部标题区 */
+    .page-header {
+      background: linear-gradient(135deg, var(--swatch--slate-dark) 0%, var(--swatch--slate-medium) 100%);
+      color: var(--swatch--ivory-light);
+      padding: var(--space--11) var(--space--9);
+    }
+
+    .page-header-content {
+      max-width: calc(var(--container--main) - var(--sidebar--width));
+    }
+
+    .page-title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-l);
+      font-weight: 400;
+      line-height: var(--line-height--tight);
+      margin-bottom: var(--space--4);
+    }
+
+    .page-subtitle {
+      font-size: var(--font-size--paragraph-m);
+      color: var(--swatch--cloud-light);
+      max-width: 60ch;
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* 设计规范概览 */
+    .design-overview {
+      background-color: var(--swatch--white);
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+      padding: var(--space--6) var(--space--9);
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap--l);
+    }
+
+    .overview-item {
+      padding: var(--space--4);
+      background-color: var(--swatch--ivory-light);
+      border-radius: var(--radius--main);
+    }
+
+    .overview-label {
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space--2);
+    }
+
+    .overview-value {
+      font-size: var(--font-size--detail-l);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+    }
+
+    /* 组件展示区 */
+    .components-container {
+      padding: var(--space--8) var(--space--9);
+    }
+
+    .component-section {
+      margin-bottom: var(--space--10);
+      scroll-margin-top: var(--space--6);
+    }
+
+    .component-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space--4);
+      margin-bottom: var(--space--5);
+      padding-bottom: var(--space--4);
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .component-title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-s);
+      font-weight: 400;
+    }
+
+    .component-priority {
+      padding: 0.125rem 0.75rem;
+      font-size: var(--font-size--detail-xs);
+      font-weight: 500;
+      border-radius: var(--radius--round);
+    }
+
+    .component-priority.required {
+      background-color: var(--swatch--book-cloth);
+      color: var(--swatch--white);
+    }
+
+    .component-priority.extended {
+      background-color: var(--swatch--ivory-dark);
+      color: var(--swatch--slate-light);
+    }
+
+    .component-reuse {
+      margin-left: auto;
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    .component-demo {
+      background-color: var(--swatch--white);
+      border: 1px solid var(--swatch--ivory-dark);
+      border-radius: var(--radius--large);
+      padding: var(--space--6);
+      margin-bottom: var(--space--5);
+    }
+
+    .demo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap--m);
+      align-items: center;
+      margin-bottom: var(--space--5);
+    }
+
+    .demo-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .demo-label {
+      width: 100%;
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+      margin-bottom: var(--space--2);
+      font-weight: 500;
+    }
+
+    .component-specs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap--m);
+      margin-bottom: var(--space--5);
+    }
+
+    .spec-card {
+      background-color: var(--swatch--ivory-light);
+      border-radius: var(--radius--main);
+      padding: var(--space--4);
+    }
+
+    .spec-title {
+      font-size: var(--font-size--detail-s);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--3);
+    }
+
+    .spec-list {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--slate-light);
+    }
+
+    .spec-list li {
+      padding: var(--space--1) 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .spec-list code {
+      font-family: var(--font--mono);
+      font-size: var(--font-size--detail-xs);
+      background-color: var(--swatch--ivory-dark);
+      padding: 0.125rem 0.375rem;
+      border-radius: var(--radius--small);
+    }
+
+    .component-usage {
+      background-color: var(--swatch--ivory-medium);
+      border-radius: var(--radius--main);
+      padding: var(--space--4);
+    }
+
+    .usage-title {
+      font-size: var(--font-size--detail-s);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--2);
+    }
+
+    .usage-text {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* ========================================
+       组件样式 Component Styles
+       ======================================== */
+    
+    /* === 按钮组件 Buttons === */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space--2);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius--main);
+      font-size: var(--font-size--paragraph-xs);
+      font-weight: 500;
+      text-decoration: none;
+      transition: all var(--transition--normal);
+      cursor: pointer;
+      border: 1px solid transparent;
+      min-height: 2.25rem;
+    }
+
+    .btn:focus {
+      outline: var(--focus--width) solid var(--swatch--focus);
+      outline-offset: var(--focus--offset);
+    }
+
+    /* Primary Button */
+    .btn--primary {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+      border-color: var(--swatch--slate-dark);
+    }
+
+    .btn--primary:hover {
+      background-color: var(--swatch--slate-medium);
+      border-color: var(--swatch--slate-medium);
+      color: var(--swatch--ivory-light);
+      transform: translateY(-1px);
+    }
+
+    .btn--primary:active {
+      transform: translateY(0);
+    }
+
+    /* Secondary Button */
+    .btn--secondary {
+      background-color: transparent;
+      color: var(--swatch--slate-dark);
+      border-color: var(--swatch--slate-dark);
+    }
+
+    .btn--secondary:hover {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+    }
+
+    /* Tertiary Button */
+    .btn--tertiary {
+      background-color: transparent;
+      color: var(--swatch--slate-dark);
+      border-color: var(--swatch--ivory-dark);
+    }
+
+    .btn--tertiary:hover {
+      border-color: var(--swatch--slate-dark);
+      background-color: var(--swatch--ivory-medium);
+    }
+
+    /* CTA Button (Book Cloth) */
+    .btn--cta {
+      background-color: var(--swatch--book-cloth);
+      color: var(--swatch--white);
+      border-color: var(--swatch--book-cloth);
+    }
+
+    .btn--cta:hover {
+      background-color: #b8694f;
+      border-color: #b8694f;
+      color: var(--swatch--white);
+      transform: translateY(-1px);
+    }
+
+    /* Button Sizes */
+    .btn--sm {
+      padding: 0.375rem 0.75rem;
+      font-size: var(--font-size--detail-s);
+      min-height: 1.75rem;
+    }
+
+    .btn--lg {
+      padding: 0.75rem 1.5rem;
+      font-size: var(--font-size--paragraph-s);
+      min-height: 2.75rem;
+    }
+
+    /* Disabled State */
+    .btn:disabled,
+    .btn--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* === 标签组件 Chips === */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 1rem;
+      border: 1px solid var(--swatch--slate-dark);
+      border-radius: var(--radius--round);
+      font-size: var(--font-size--paragraph-xs);
+      transition: all var(--transition--normal);
+      cursor: pointer;
+    }
+
+    .chip--default {
+      background-color: transparent;
+      color: var(--swatch--slate-dark);
+    }
+
+    .chip--default:hover {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+    }
+
+    .chip--primary {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+    }
+
+    .chip--outlined {
+      background-color: transparent;
+      color: var(--swatch--cloud-dark);
+      border-color: var(--swatch--cloud-light);
+    }
+
+    .chip--outlined:hover {
+      border-color: var(--swatch--slate-dark);
+      color: var(--swatch--slate-dark);
+    }
+
+    .chip--active {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+    }
+
+    /* === 表单组件 Form Elements === */
+    .form-field {
+      margin-bottom: var(--space--4);
+    }
+
+    .form-label {
+      display: block;
+      font-size: var(--font-size--detail-s);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--2);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--swatch--cloud-light);
+      border-radius: var(--radius--small);
+      background-color: var(--swatch--ivory-light);
+      font-size: var(--font-size--paragraph-xs);
+      font-family: inherit;
+      color: var(--swatch--slate-dark);
+      transition: all var(--transition--normal);
+      height: 3rem;
+    }
+
+    .form-input::placeholder {
+      color: var(--swatch--cloud-light);
+    }
+
+    .form-input:hover {
+      border-color: var(--swatch--cloud-dark);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--swatch--slate-dark);
+      background-color: var(--swatch--white);
+      box-shadow: 0 0 0 3px rgba(25, 25, 25, 0.1);
+    }
+
+    .form-input--error {
+      border-color: var(--swatch--error);
+    }
+
+    .form-input--error:focus {
+      border-color: var(--swatch--error);
+      box-shadow: 0 0 0 3px rgba(239, 76, 67, 0.1);
+    }
+
+    .form-input:disabled {
+      background-color: var(--swatch--ivory-dark);
+      color: var(--swatch--cloud-dark);
+      cursor: not-allowed;
+    }
+
+    .form-error {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--error);
+      margin-top: var(--space--1);
+    }
+
+    .form-search {
+      position: relative;
+    }
+
+    .form-search .form-input {
+      padding-left: 2.5rem;
+    }
+
+    .form-search-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--swatch--cloud-dark);
+    }
+
+    /* === 卡片组件 Cards === */
+    .card {
+      background-color: var(--swatch--white);
+      border-radius: var(--radius--large);
+      padding: var(--space--6);
+      transition: all var(--transition--normal);
+    }
+
+    .card--link {
+      cursor: pointer;
+    }
+
+    .card--link:hover {
+      box-shadow: var(--shadow--m);
+      transform: translateY(-2px);
+    }
+
+    .card--faded {
+      background-color: var(--swatch--ivory-medium);
+    }
+
+    .card--bordered {
+      border: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--space--4);
+    }
+
+    .card__tag {
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: var(--space--2);
+    }
+
+    .card__title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-xs);
+      font-weight: 400;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--3);
+      line-height: var(--line-height--tight);
+    }
+
+    .card__description {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+      margin-bottom: var(--space--4);
+    }
+
+    .card__date {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    .card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space--2);
+      font-size: var(--font-size--detail-m);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+    }
+
+    .card__link:hover {
+      color: var(--swatch--book-cloth);
+    }
+
+    /* News Card */
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .news-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--space--2);
+      margin-bottom: var(--space--3);
+    }
+
+    .news-card__icon {
+      width: 24px;
+      height: 24px;
+      color: var(--swatch--book-cloth);
+    }
+
+    .news-card__tag {
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .news-card__title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--paragraph-m);
+      font-weight: 400;
+      color: var(--swatch--slate-dark);
+      line-height: var(--line-height--normal);
+      margin-bottom: var(--space--4);
+      flex: 1;
+    }
+
+    .news-card__date {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    /* Feature Card */
+    .feature-card {
+      padding: var(--space--7);
+    }
+
+    .feature-card__icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: var(--space--5);
+      color: var(--swatch--book-cloth);
+    }
+
+    .feature-card__title {
+      font-family: var(--font--sans);
+      font-size: var(--font-size--paragraph-l);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--3);
+    }
+
+    .feature-card__description {
+      font-size: var(--font-size--paragraph-s);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* Value Card */
+    .value-card {
+      padding: var(--space--6);
+    }
+
+    .value-card__number {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-l);
+      font-weight: 400;
+      color: var(--swatch--book-cloth);
+      margin-bottom: var(--space--3);
+    }
+
+    .value-card__title {
+      font-size: var(--font-size--paragraph-l);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--3);
+    }
+
+    .value-card__description {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* Benefit Card */
+    .benefit-card {
+      background: linear-gradient(135deg, var(--swatch--manilla) 0%, var(--swatch--kraft) 100%);
+      padding: var(--space--6);
+    }
+
+    .benefit-card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--space--4);
+      color: var(--swatch--slate-dark);
+    }
+
+    .benefit-card__title {
+      font-size: var(--font-size--paragraph-m);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--4);
+    }
+
+    .benefit-card__list {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+    }
+
+    .benefit-card__list li {
+      padding: var(--space--1) 0;
+      position: relative;
+      padding-left: var(--space--4);
+    }
+
+    .benefit-card__list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--swatch--slate-dark);
+    }
+
+    /* Learning Path Card */
+    .learning-card {
+      text-align: center;
+      padding: var(--space--7);
+    }
+
+    .learning-card__icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--space--5);
+      color: var(--swatch--book-cloth);
+    }
+
+    .learning-card__title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--paragraph-l);
+      font-weight: 400;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--3);
+    }
+
+    .learning-card__description {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+      margin-bottom: var(--space--5);
+    }
+
+    /* === 导航栏 Navigation === */
+    .navbar-demo {
+      background-color: var(--swatch--ivory-light);
+      border: 1px solid var(--swatch--ivory-dark);
+      border-radius: var(--radius--main);
+      padding: 0 var(--space--5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--nav--height);
+    }
+
+    .navbar__logo {
+      display: flex;
+      align-items: center;
+      gap: var(--space--2);
+      font-weight: 600;
+      font-size: var(--font-size--paragraph-s);
+    }
+
+    .navbar__logo svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .navbar__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space--5);
+    }
+
+    .navbar__link {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-dark);
+      transition: color var(--transition--normal);
+    }
+
+    .navbar__link:hover {
+      color: var(--swatch--book-cloth);
+    }
+
+    .navbar__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space--3);
+    }
+
+    /* === Hero 区块 === */
+    .hero-demo {
+      background: linear-gradient(135deg, var(--swatch--slate-dark) 0%, var(--swatch--slate-medium) 100%);
+      border-radius: var(--radius--large);
+      padding: var(--space--10) var(--space--8);
+      color: var(--swatch--ivory-light);
+      text-align: center;
+    }
+
+    .hero__title {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-l);
+      font-weight: 400;
+      line-height: var(--line-height--tight);
+      margin-bottom: var(--space--4);
+    }
+
+    .hero__subtitle {
+      font-size: var(--font-size--paragraph-m);
+      color: var(--swatch--cloud-light);
+      max-width: 50ch;
+      margin: 0 auto var(--space--6);
+      line-height: var(--line-height--relaxed);
+    }
+
+    .hero__actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--space--4);
+    }
+
+    /* === 页脚 Footer === */
+    .footer-demo {
+      background-color: var(--swatch--slate-dark);
+      border-radius: var(--radius--large);
+      padding: var(--space--8);
+      color: var(--swatch--ivory-light);
+    }
+
+    .footer__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap--l);
+      margin-bottom: var(--space--6);
+    }
+
+    .footer__column-title {
+      font-size: var(--font-size--detail-s);
+      font-weight: 600;
+      color: var(--swatch--ivory-light);
+      margin-bottom: var(--space--4);
+    }
+
+    .footer__links li {
+      margin-bottom: var(--space--2);
+    }
+
+    .footer__link {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-light);
+      transition: color var(--transition--normal);
+    }
+
+    .footer__link:hover {
+      color: var(--swatch--ivory-light);
+    }
+
+    .footer__bottom {
+      padding-top: var(--space--5);
+      border-top: 1px solid var(--swatch--slate-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer__copyright {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    .footer__social {
+      display: flex;
+      gap: var(--space--3);
+    }
+
+    .footer__social-link {
+      width: 24px;
+      height: 24px;
+      color: var(--swatch--cloud-light);
+      transition: color var(--transition--normal);
+    }
+
+    .footer__social-link:hover {
+      color: var(--swatch--ivory-light);
+    }
+
+    /* === 网格布局 Grid === */
+    .grid-demo {
+      display: grid;
+      gap: var(--gap--m);
+    }
+
+    .grid-demo--2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-demo--3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-demo--4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-item {
+      background-color: var(--swatch--ivory-medium);
+      border: 1px dashed var(--swatch--cloud-light);
+      border-radius: var(--radius--main);
+      padding: var(--space--5);
+      text-align: center;
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    /* === 引用组件 Quote === */
+    .quote {
+      padding: var(--space--6);
+      background-color: var(--swatch--ivory-medium);
+      border-radius: var(--radius--large);
+      position: relative;
+    }
+
+    .quote::before {
+      content: """;
+      font-family: var(--font--serif);
+      font-size: 4rem;
+      color: var(--swatch--book-cloth);
+      position: absolute;
+      top: var(--space--4);
+      left: var(--space--4);
+      line-height: 1;
+      opacity: 0.3;
+    }
+
+    .quote__text {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--paragraph-m);
+      font-style: italic;
+      color: var(--swatch--slate-dark);
+      line-height: var(--line-height--relaxed);
+      margin-bottom: var(--space--5);
+      padding-left: var(--space--6);
+    }
+
+    .quote__author {
+      display: flex;
+      align-items: center;
+      gap: var(--space--3);
+      padding-left: var(--space--6);
+    }
+
+    .quote__avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--swatch--cloud-light);
+    }
+
+    .quote__name {
+      font-size: var(--font-size--detail-m);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+    }
+
+    .quote__role {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+    }
+
+    /* === 时间线 Timeline === */
+    .timeline {
+      position: relative;
+      padding-left: var(--space--7);
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: var(--swatch--ivory-dark);
+    }
+
+    .timeline__item {
+      position: relative;
+      padding-bottom: var(--space--6);
+    }
+
+    .timeline__item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline__dot {
+      position: absolute;
+      left: calc(-1 * var(--space--7) - 4px);
+      top: 0;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--swatch--book-cloth);
+      border: 2px solid var(--swatch--ivory-light);
+    }
+
+    .timeline__date {
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-dark);
+      margin-bottom: var(--space--1);
+    }
+
+    .timeline__title {
+      font-size: var(--font-size--paragraph-s);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--2);
+    }
+
+    .timeline__description {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* === 终端样式 Terminal === */
+    .terminal {
+      border-radius: var(--radius--main);
+      overflow: hidden;
+      box-shadow: var(--shadow--m);
+    }
+
+    .terminal__header {
+      background-color: var(--swatch--slate-medium);
+      padding: var(--space--2) var(--space--4);
+      display: flex;
+      align-items: center;
+      gap: var(--space--2);
+    }
+
+    .terminal__dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .terminal__dot--red { background-color: #ff5f56; }
+    .terminal__dot--yellow { background-color: #ffbd2e; }
+    .terminal__dot--green { background-color: #27ca40; }
+
+    .terminal__title {
+      flex: 1;
+      text-align: center;
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-light);
+    }
+
+    .terminal__body {
+      background-color: var(--swatch--slate-dark);
+      padding: var(--space--5);
+      min-height: 200px;
+    }
+
+    .terminal__line {
+      font-family: var(--font--mono);
+      font-size: var(--font-size--detail-s);
+      color: var(--swatch--cloud-light);
+      margin-bottom: var(--space--2);
+    }
+
+    .terminal__prompt {
+      color: var(--swatch--book-cloth);
+    }
+
+    .terminal__command {
+      color: var(--swatch--ivory-light);
+    }
+
+    .terminal__output {
+      color: var(--swatch--cloud-medium);
+    }
+
+    /* === 表格组件 Table === */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: var(--space--3) var(--space--4);
+      text-align: left;
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .table th {
+      font-size: var(--font-size--detail-s);
+      font-weight: 600;
+      color: var(--swatch--slate-dark);
+      background-color: var(--swatch--ivory-medium);
+    }
+
+    .table td {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+    }
+
+    .table tr:hover td {
+      background-color: var(--swatch--ivory-light);
+    }
+
+    /* === 数据统计卡片 Stat Card === */
+    .stat-card {
+      text-align: center;
+      padding: var(--space--6);
+    }
+
+    .stat-card__value {
+      font-family: var(--font--serif);
+      font-size: var(--font-size--display-m);
+      font-weight: 400;
+      color: var(--swatch--book-cloth);
+      margin-bottom: var(--space--2);
+    }
+
+    .stat-card__label {
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+    }
+
+    /* === 公告条 Announcement Bar === */
+    .announcement-bar {
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+      padding: var(--space--3) var(--space--5);
+      text-align: center;
+      font-size: var(--font-size--detail-s);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space--3);
+    }
+
+    .announcement-bar__link {
+      color: var(--swatch--book-cloth);
+      font-weight: 500;
+    }
+
+    .announcement-bar__link:hover {
+      text-decoration: underline;
+    }
+
+    /* === 标签页 Tabs === */
+    .tabs {
+      display: flex;
+      gap: var(--space--1);
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+      margin-bottom: var(--space--5);
+    }
+
+    .tab {
+      padding: var(--space--3) var(--space--4);
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--cloud-dark);
+      border-bottom: 2px solid transparent;
+      transition: all var(--transition--normal);
+      cursor: pointer;
+    }
+
+    .tab:hover {
+      color: var(--swatch--slate-dark);
+    }
+
+    .tab--active {
+      color: var(--swatch--slate-dark);
+      border-bottom-color: var(--swatch--book-cloth);
+      font-weight: 500;
+    }
+
+    /* === 折叠面板 Accordion === */
+    .accordion {
+      border: 1px solid var(--swatch--ivory-dark);
+      border-radius: var(--radius--main);
+      overflow: hidden;
+    }
+
+    .accordion__item {
+      border-bottom: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .accordion__item:last-child {
+      border-bottom: none;
+    }
+
+    .accordion__header {
+      padding: var(--space--4) var(--space--5);
+      background-color: var(--swatch--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background-color var(--transition--normal);
+    }
+
+    .accordion__header:hover {
+      background-color: var(--swatch--ivory-light);
+    }
+
+    .accordion__title {
+      font-size: var(--font-size--detail-m);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+    }
+
+    .accordion__icon {
+      color: var(--swatch--cloud-dark);
+      transition: transform var(--transition--normal);
+    }
+
+    .accordion__item--open .accordion__icon {
+      transform: rotate(180deg);
+    }
+
+    .accordion__content {
+      padding: 0 var(--space--5) var(--space--4);
+      font-size: var(--font-size--detail-m);
+      color: var(--swatch--slate-light);
+      line-height: var(--line-height--relaxed);
+    }
+
+    /* === 回到顶部 Back to Top === */
+    .back-to-top {
+      position: fixed;
+      bottom: var(--space--6);
+      right: var(--space--6);
+      width: 48px;
+      height: 48px;
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow--m);
+      transition: all var(--transition--normal);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background-color: var(--swatch--book-cloth);
+      transform: translateY(-2px);
+    }
+
+    /* === 分隔线 Divider === */
+    .divider {
+      height: 1px;
+      background-color: var(--swatch--ivory-dark);
+      margin: var(--space--6) 0;
+    }
+
+    .divider--thick {
+      height: 2px;
+    }
+
+    .divider--accent {
+      background-color: var(--swatch--book-cloth);
+    }
+
+    /* === 颜色展示 Color Swatch === */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap--m);
+    }
+
+    .color-swatch {
+      border-radius: var(--radius--main);
+      overflow: hidden;
+      border: 1px solid var(--swatch--ivory-dark);
+    }
+
+    .color-swatch__preview {
+      height: 80px;
+    }
+
+    .color-swatch__info {
+      padding: var(--space--3);
+      background-color: var(--swatch--white);
+    }
+
+    .color-swatch__name {
+      font-size: var(--font-size--detail-s);
+      font-weight: 500;
+      color: var(--swatch--slate-dark);
+      margin-bottom: var(--space--1);
+    }
+
+    .color-swatch__value {
+      font-family: var(--font--mono);
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+    }
+
+    /* === 字体展示 Typography Display === */
+    .typography-display {
+      margin-bottom: var(--space--5);
+    }
+
+    .typography-display__sample {
+      margin-bottom: var(--space--2);
+    }
+
+    .typography-display__info {
+      display: flex;
+      gap: var(--space--4);
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+    }
+
+    .typography-display__info code {
+      font-family: var(--font--mono);
+      background-color: var(--swatch--ivory-medium);
+      padding: 0.125rem 0.375rem;
+      border-radius: var(--radius--small);
+    }
+
+    /* === 状态展示 States === */
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap--m);
+      text-align: center;
+    }
+
+    .state-item {
+      padding: var(--space--4);
+    }
+
+    .state-label {
+      font-size: var(--font-size--detail-xs);
+      color: var(--swatch--cloud-dark);
+      margin-top: var(--space--2);
+    }
+
+    /* === 响应式 Responsive === */
+    @media screen and (max-width: 991px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--transition--normal);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .overview-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .component-specs {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-demo--4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .color-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .page-header {
+        padding: var(--space--8) var(--space--5);
+      }
+
+      .page-title {
+        font-size: var(--font-size--display-m);
+      }
+
+      .design-overview,
+      .components-container {
+        padding: var(--space--5);
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-demo--2,
+      .grid-demo--3,
+      .grid-demo--4 {
+        grid-template-columns: 1fr;
+      }
+
+      .footer__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero__actions {
+        flex-direction: column;
+      }
+
+      .color-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .states-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* 移动端菜单按钮 */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: var(--space--4);
+      left: var(--space--4);
+      z-index: 200;
+      width: 48px;
+      height: 48px;
+      background-color: var(--swatch--slate-dark);
+      color: var(--swatch--ivory-light);
+      border-radius: var(--radius--main);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow--m);
+    }
+
+    @media screen and (max-width: 991px) {
+      .mobile-menu-btn {
+        display: flex;
+      }
+    }
+
+    /* 遮罩层 */
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 50;
+    }
+
+    .overlay.visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- 移动端菜单按钮 -->
+  <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- 遮罩层 -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app-layout">
+    <!-- 侧边导航 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="currentColor">
+            <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 4a10 10 0 0110 10c0 5.523-4.477 10-10 10S6 21.523 6 16 10.477 6 16 6z"/>
+            <circle cx="16" cy="16" r="5"/>
+          </svg>
+          <span class="sidebar-logo-text">Anthropic UI</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- 设计基础 -->
+        <div class="nav-section">
+          <div class="nav-section-title">设计基础</div>
+          <a href="#colors" class="nav-item active">颜色系统 <span class="nav-item-badge primary">8</span></a>
+          <a href="#typography" class="nav-item">字体系统</a>
+          <a href="#spacing" class="nav-item">间距系统</a>
+          <a href="#grid" class="nav-item">网格布局</a>
+        </div>
+
+        <!-- 基础组件 -->
+        <div class="nav-section">
+          <div class="nav-section-title">基础组件 (必用)</div>
+          <a href="#buttons" class="nav-item">按钮组件 <span class="nav-item-badge">9</span></a>
+          <a href="#headings" class="nav-item">标题组件 <span class="nav-item-badge">5</span></a>
+          <a href="#paragraphs" class="nav-item">正文组件 <span class="nav-item-badge">3</span></a>
+          <a href="#chips" class="nav-item">标签组件 <span class="nav-item-badge">3</span></a>
+          <a href="#forms" class="nav-item">表单组件</a>
+          <a href="#cards" class="nav-item">卡片组件 <span class="nav-item-badge">5</span></a>
+          <a href="#navigation" class="nav-item">导航栏</a>
+          <a href="#hero" class="nav-item">Hero区块</a>
+          <a href="#footer" class="nav-item">页脚组件</a>
+          <a href="#quote" class="nav-item">引用组件</a>
+          <a href="#timeline" class="nav-item">时间线列表</a>
+          <a href="#states" class="nav-item">交互状态</a>
+        </div>
+
+        <!-- 拓展组件 -->
+        <div class="nav-section">
+          <div class="nav-section-title">拓展组件</div>
+          <a href="#terminal" class="nav-item">终端样式</a>
+          <a href="#table" class="nav-item">表格组件</a>
+          <a href="#announcement" class="nav-item">公告条</a>
+          <a href="#tabs" class="nav-item">标签页</a>
+          <a href="#accordion" class="nav-item">折叠面板</a>
+          <a href="#stats" class="nav-item">数据统计</a>
+          <a href="#dividers" class="nav-item">分隔线</a>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 页面标题区 -->
+      <header class="page-header">
+        <div class="page-header-content">
+          <h1 class="page-title">Anthropic 组件展示页面</h1>
+          <p class="page-subtitle">
+            基于 Anthropic 官网设计系统，完整拆解并还原所有 UI 组件。
+            严格遵循 Geist Design Agency 设计规范，涵盖 18+ 类基础组件及拓展组件。
+          </p>
+        </div>
+      </header>
+
+      <!-- 设计规范概览 -->
+      <section class="design-overview">
+        <div class="overview-grid">
+          <div class="overview-item">
+            <div class="overview-label">主背景色</div>
+            <div class="overview-value">#FAFAF7 Ivory Light</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">主文本色</div>
+            <div class="overview-value">#191919 Slate Dark</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">品牌强调色</div>
+            <div class="overview-value">#CC785C Book Cloth</div>
+          </div>
+          <div class="overview-item">
+            <div class="overview-label">标准过渡</div>
+            <div class="overview-value">0.2s ease</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 组件展示区 -->
+      <div class="components-container">
+        
+        <!-- ========================================
+             颜色系统 Color System
+             ======================================== -->
+        <section id="colors" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">颜色系统</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">核心色板 (8色)</div>
+            <div class="color-grid">
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #191919;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Slate Dark</div>
+                  <div class="color-swatch__value">#191919 | RGB(25, 25, 25)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #666663;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Cloud Dark</div>
+                  <div class="color-swatch__value">#666663 | RGB(102, 102, 99)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #BFBFBA;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Cloud Light</div>
+                  <div class="color-swatch__value">#BFBFBA | RGB(191, 191, 186)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #E5E4DF;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Ivory Dark</div>
+                  <div class="color-swatch__value">#E5E4DF | RGB(229, 228, 223)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #FAFAF7;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Ivory Light</div>
+                  <div class="color-swatch__value">#FAFAF7 | RGB(250, 250, 247)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #CC785C;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Book Cloth</div>
+                  <div class="color-swatch__value">#CC785C | RGB(204, 120, 92)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #01A4F2;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Focus Blue</div>
+                  <div class="color-swatch__value">#01A4F2 | RGB(1, 164, 242)</div>
+                </div>
+              </div>
+              <div class="color-swatch">
+                <div class="color-swatch__preview" style="background-color: #EF4C43;"></div>
+                <div class="color-swatch__info">
+                  <div class="color-swatch__name">Error Red</div>
+                  <div class="color-swatch__value">#EF4C43 | RGB(239, 76, 67)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">使用规则</div>
+              <ul class="spec-list">
+                <li><span>主背景</span> <code>Ivory Light #FAFAF7</code></li>
+                <li><span>卡片背景</span> <code>White #FFFFFF</code></li>
+                <li><span>主文本</span> <code>Slate Dark #191919</code></li>
+                <li><span>次级文本</span> <code>Cloud Dark #666663</code></li>
+                <li><span>强调/CTA</span> <code>Book Cloth #CC785C</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">注意事项</div>
+              <ul class="spec-list">
+                <li>避免使用纯黑 #000000</li>
+                <li>Book Cloth 是品牌核心色，谨慎使用</li>
+                <li>保持对比度符合 WCAG AA 标准</li>
+                <li>整体色调温暖、柔和、自然</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             字体系统 Typography
+             ======================================== -->
+        <section id="typography" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">字体系统</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">Display 标题层级</div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--serif); font-size: var(--font-size--display-xxxl); line-height: 1.1;">Display XXXL</div>
+              <div class="typography-display__info">
+                <span>Tiempos / Serif</span>
+                <code>6rem (96px)</code>
+                <code>font-weight: 400</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--serif); font-size: var(--font-size--display-xl); line-height: 1.1;">Display XL</div>
+              <div class="typography-display__info">
+                <span>Tiempos / Serif</span>
+                <code>4rem (64px)</code>
+                <code>font-weight: 400</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--serif); font-size: var(--font-size--display-l); line-height: 1.1;">Display L</div>
+              <div class="typography-display__info">
+                <span>Tiempos / Serif</span>
+                <code>3rem (48px)</code>
+                <code>font-weight: 400</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--sans); font-size: var(--font-size--display-m); font-weight: 600; line-height: 1.1;">Display M</div>
+              <div class="typography-display__info">
+                <span>Styrene / Sans</span>
+                <code>2rem (32px)</code>
+                <code>font-weight: 600</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--sans); font-size: var(--font-size--display-s); font-weight: 500; line-height: 1.1;">Display S</div>
+              <div class="typography-display__info">
+                <span>Styrene / Sans</span>
+                <code>1.5rem (24px)</code>
+                <code>font-weight: 500</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">Paragraph 正文层级</div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--serif); font-size: var(--font-size--paragraph-l); line-height: 1.5;">Paragraph L - 优雅的现代衬线字体，适合长文本阅读</div>
+              <div class="typography-display__info">
+                <span>Tiempos / Serif</span>
+                <code>1.5rem (24px)</code>
+                <code>line-height: 1.5</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--sans); font-size: var(--font-size--paragraph-m); line-height: 1.5;">Paragraph M - 现代几何无衬线字体，清晰易读</div>
+              <div class="typography-display__info">
+                <span>Styrene / Sans</span>
+                <code>1.25rem (20px)</code>
+                <code>line-height: 1.5</code>
+              </div>
+            </div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--sans); font-size: var(--font-size--paragraph-s); line-height: 1.5;">Paragraph S - 适合屏幕显示的正文字体</div>
+              <div class="typography-display__info">
+                <span>Styrene / Sans</span>
+                <code>1.125rem (18px)</code>
+                <code>line-height: 1.5</code>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">Monospace 等宽字体</div>
+            <div class="typography-display">
+              <div class="typography-display__sample" style="font-family: var(--font--mono); font-size: var(--font-size--detail-m); line-height: 1.5;">const anthropic = new Anthropic();</div>
+              <div class="typography-display__info">
+                <span>JetBrains Mono</span>
+                <code>1rem (16px)</code>
+                <code>用于代码/技术内容</code>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             按钮组件 Buttons
+             ======================================== -->
+        <section id="buttons" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">按钮组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面 (9个变体)</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">Primary Button (主要按钮)</div>
+            <div class="demo-row">
+              <button class="btn btn--primary btn--sm">Small</button>
+              <button class="btn btn--primary">Default</button>
+              <button class="btn btn--primary btn--lg">Large</button>
+              <button class="btn btn--primary" disabled>Disabled</button>
+            </div>
+
+            <div class="demo-label">Secondary Button (次级按钮)</div>
+            <div class="demo-row">
+              <button class="btn btn--secondary btn--sm">Small</button>
+              <button class="btn btn--secondary">Default</button>
+              <button class="btn btn--secondary btn--lg">Large</button>
+              <button class="btn btn--secondary" disabled>Disabled</button>
+            </div>
+
+            <div class="demo-label">Tertiary Button (三级按钮)</div>
+            <div class="demo-row">
+              <button class="btn btn--tertiary btn--sm">Small</button>
+              <button class="btn btn--tertiary">Default</button>
+              <button class="btn btn--tertiary btn--lg">Large</button>
+              <button class="btn btn--tertiary" disabled>Disabled</button>
+            </div>
+
+            <div class="demo-label">CTA Button (强调按钮 - Book Cloth)</div>
+            <div class="demo-row">
+              <button class="btn btn--cta btn--sm">Small</button>
+              <button class="btn btn--cta">Try Claude</button>
+              <button class="btn btn--cta btn--lg">Get Started</button>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>内边距 (默认)</span> <code>0.5rem 1rem</code></li>
+                <li><span>圆角</span> <code>0.5rem (8px)</code></li>
+                <li><span>最小高度</span> <code>2.25rem (36px)</code></li>
+                <li><span>字号</span> <code>1rem (16px)</code></li>
+                <li><span>字重</span> <code>500</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">交互规则</div>
+              <ul class="spec-list">
+                <li><span>过渡时长</span> <code>0.2s ease</code></li>
+                <li><span>Hover</span> <code>背景变亮 + 上移1px</code></li>
+                <li><span>Focus</span> <code>2px蓝色轮廓</code></li>
+                <li><span>Disabled</span> <code>opacity: 0.5</code></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="component-usage">
+            <div class="usage-title">使用场景</div>
+            <p class="usage-text">
+              Primary: 页面主要操作 | Secondary: 次要操作 | Tertiary: 辅助操作 | CTA: 关键转化入口 (如 "Try Claude")
+            </p>
+          </div>
+        </section>
+
+        <!-- ========================================
+             标签组件 Chips
+             ======================================== -->
+        <section id="chips" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">标签组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: News、Research、Transparency</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">标签样式变体</div>
+            <div class="demo-row">
+              <span class="chip chip--default">Default</span>
+              <span class="chip chip--primary">Primary</span>
+              <span class="chip chip--outlined">Outlined</span>
+              <span class="chip chip--active">Active</span>
+            </div>
+
+            <div class="demo-label">分类标签示例</div>
+            <div class="demo-row">
+              <span class="chip chip--default">Announcements</span>
+              <span class="chip chip--default">Research</span>
+              <span class="chip chip--default">Policy</span>
+              <span class="chip chip--default">Product</span>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>内边距</span> <code>0.125rem 1rem</code></li>
+                <li><span>圆角</span> <code>100vw (完全圆角)</code></li>
+                <li><span>边框</span> <code>1px solid</code></li>
+                <li><span>字号</span> <code>1rem (16px)</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">交互规则</div>
+              <ul class="spec-list">
+                <li><span>Hover</span> <code>背景填充 + 文字反色</code></li>
+                <li><span>Active</span> <code>深色背景 + 浅色文字</code></li>
+                <li><span>过渡</span> <code>0.2s ease</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             表单组件 Forms
+             ======================================== -->
+        <section id="forms" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">表单组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: Contact、Newsletter、Search</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">输入框状态</div>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+              <div class="form-field">
+                <label class="form-label">默认状态</label>
+                <input type="text" class="form-input" placeholder="Enter your email">
+              </div>
+              <div class="form-field">
+                <label class="form-label">聚焦状态</label>
+                <input type="text" class="form-input" value="claude@anthropic.com" style="border-color: var(--swatch--slate-dark); background-color: var(--swatch--white);">
+              </div>
+              <div class="form-field">
+                <label class="form-label">错误状态</label>
+                <input type="text" class="form-input form-input--error" value="invalid-email">
+                <div class="form-error">Please enter a valid email address</div>
+              </div>
+              <div class="form-field">
+                <label class="form-label">禁用状态</label>
+                <input type="text" class="form-input" value="Disabled input" disabled>
+              </div>
+            </div>
+
+            <div class="demo-label">搜索框</div>
+            <div class="form-search" style="max-width: 400px;">
+              <svg class="form-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" class="form-input" placeholder="Search...">
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>高度</span> <code>3rem (48px)</code></li>
+                <li><span>内边距</span> <code>0.75rem 1rem</code></li>
+                <li><span>圆角</span> <code>0.25rem (4px)</code></li>
+                <li><span>边框</span> <code>1px solid Cloud Light</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">交互规则</div>
+              <ul class="spec-list">
+                <li><span>Hover</span> <code>边框变深</code></li>
+                <li><span>Focus</span> <code>边框变黑 + 阴影</code></li>
+                <li><span>Error</span> <code>边框变红</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             卡片组件 Cards
+             ======================================== -->
+        <section id="cards" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">卡片组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面 (5种类型)</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">新闻卡片 (News Card)</div>
+            <div class="grid-demo grid-demo--3" style="margin-bottom: 2rem;">
+              <div class="card card--bordered card--link news-card">
+                <div class="news-card__header">
+                  <svg class="news-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                  </svg>
+                  <span class="news-card__tag">Announcements</span>
+                </div>
+                <h3 class="news-card__title">Introducing Claude Opus 4.5</h3>
+                <span class="news-card__date">Dec 05, 2025</span>
+              </div>
+              <div class="card card--bordered card--link news-card">
+                <div class="news-card__header">
+                  <svg class="news-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                  <span class="news-card__tag">Research</span>
+                </div>
+                <h3 class="news-card__title">Tracing the thoughts of a large language model</h3>
+                <span class="news-card__date">Mar 27, 2025</span>
+              </div>
+              <div class="card card--bordered card--link news-card">
+                <div class="news-card__header">
+                  <svg class="news-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                  <span class="news-card__tag">Policy</span>
+                </div>
+                <h3 class="news-card__title">Anthropic's Responsible Scaling Policy</h3>
+                <span class="news-card__date">Nov 15, 2025</span>
+              </div>
+            </div>
+
+            <div class="demo-label">特性卡片 (Feature Card)</div>
+            <div class="grid-demo grid-demo--3" style="margin-bottom: 2rem;">
+              <div class="card card--bordered feature-card">
+                <svg class="feature-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+                <h3 class="feature-card__title">Build with Claude</h3>
+                <p class="feature-card__description">Start developing Claude-powered applications with our comprehensive API guides.</p>
+              </div>
+              <div class="card card--bordered feature-card">
+                <svg class="feature-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+                <h3 class="feature-card__title">Claude for Work</h3>
+                <p class="feature-card__description">Learn to implement Claude across your organization and maximize team productivity.</p>
+              </div>
+              <div class="card card--bordered feature-card">
+                <svg class="feature-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <h3 class="feature-card__title">Claude for Personal</h3>
+                <p class="feature-card__description">Discover how to leverage Claude's capabilities for your individual projects.</p>
+              </div>
+            </div>
+
+            <div class="demo-label">价值观卡片 (Value Card)</div>
+            <div class="grid-demo grid-demo--2" style="margin-bottom: 2rem;">
+              <div class="card card--faded value-card">
+                <div class="value-card__number">01</div>
+                <h3 class="value-card__title">Long-term benefit</h3>
+                <p class="value-card__description">We strive to make decisions that maximize positive outcomes for humanity in the long run.</p>
+              </div>
+              <div class="card card--faded value-card">
+                <div class="value-card__number">02</div>
+                <h3 class="value-card__title">Raise the bar</h3>
+                <p class="value-card__description">We want to constantly set the industry bar for AI safety and security.</p>
+              </div>
+            </div>
+
+            <div class="demo-label">福利卡片 (Benefit Card)</div>
+            <div class="grid-demo grid-demo--2">
+              <div class="card benefit-card">
+                <svg class="benefit-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <h3 class="benefit-card__title">Health & Wellness</h3>
+                <ul class="benefit-card__list">
+                  <li>Comprehensive health insurance</li>
+                  <li>Dental and vision coverage</li>
+                  <li>Mental health support</li>
+                </ul>
+              </div>
+              <div class="card benefit-card">
+                <svg class="benefit-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <h3 class="benefit-card__title">Time Off</h3>
+                <ul class="benefit-card__list">
+                  <li>Flexible PTO policy</li>
+                  <li>Paid parental leave</li>
+                  <li>Company holidays</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>内边距</span> <code>2rem (32px)</code></li>
+                <li><span>圆角</span> <code>1rem (16px)</code></li>
+                <li><span>背景</span> <code>White / Ivory Medium</code></li>
+                <li><span>边框</span> <code>1px solid Ivory Dark</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">交互规则</div>
+              <ul class="spec-list">
+                <li><span>Hover (链接卡片)</span> <code>上移2px + 阴影</code></li>
+                <li><span>过渡</span> <code>0.2s ease</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             导航栏 Navigation
+             ======================================== -->
+        <section id="navigation" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">导航栏</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">桌面端导航栏</div>
+            <div class="navbar-demo">
+              <div class="navbar__logo">
+                <svg viewBox="0 0 32 32" fill="currentColor">
+                  <path d="M16 2C8.268 2 2 8.268 2 16s6.268 14 14 14 14-6.268 14-14S23.732 2 16 2zm0 4a10 10 0 0110 10c0 5.523-4.477 10-10 10S6 21.523 6 16 10.477 6 16 6z"/>
+                  <circle cx="16" cy="16" r="5"/>
+                </svg>
+                <span>Anthropic</span>
+              </div>
+              <nav class="navbar__links">
+                <a href="#" class="navbar__link">Research</a>
+                <a href="#" class="navbar__link">Economic Futures</a>
+                <a href="#" class="navbar__link">Commitments</a>
+                <a href="#" class="navbar__link">Learn</a>
+                <a href="#" class="navbar__link">News</a>
+              </nav>
+              <div class="navbar__actions">
+                <button class="btn btn--secondary btn--sm">Log in</button>
+                <button class="btn btn--primary btn--sm">Try Claude</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>高度</span> <code>4rem (64px)</code></li>
+                <li><span>背景</span> <code>Ivory Light #FAFAF7</code></li>
+                <li><span>定位</span> <code>sticky, top: 0</code></li>
+                <li><span>z-index</span> <code>1000</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">响应式规则</div>
+              <ul class="spec-list">
+                <li><span>≤991px</span> <code>切换为汉堡菜单</code></li>
+                <li><span>Logo</span> <code>始终可见</code></li>
+                <li><span>CTA按钮</span> <code>始终可见</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             Hero 区块
+             ======================================== -->
+        <section id="hero" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">Hero 区块</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 首页、Landing Pages</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="hero-demo">
+              <h1 class="hero__title">AI research and products that put safety at the frontier</h1>
+              <p class="hero__subtitle">AI will have a vast impact on the world. Anthropic is a public benefit corporation dedicated to securing its benefits and mitigating its risks.</p>
+              <div class="hero__actions">
+                <button class="btn btn--cta btn--lg">Try Claude</button>
+                <button class="btn" style="background: transparent; border: 1px solid var(--swatch--ivory-light); color: var(--swatch--ivory-light);">Learn More</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>背景</span> <code>渐变 Slate Dark → Medium</code></li>
+                <li><span>内边距</span> <code>5rem 4rem</code></li>
+                <li><span>标题字号</span> <code>3rem (48px)</code></li>
+                <li><span>副标题</span> <code>1.25rem, Cloud Light</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">布局规则</div>
+              <ul class="spec-list">
+                <li><span>文本对齐</span> <code>居中</code></li>
+                <li><span>副标题最大宽度</span> <code>50ch</code></li>
+                <li><span>按钮间距</span> <code>1rem</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             页脚组件 Footer
+             ======================================== -->
+        <section id="footer" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">页脚组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="footer-demo">
+              <div class="footer__grid">
+                <div class="footer__column">
+                  <div class="footer__column-title">Products</div>
+                  <ul class="footer__links">
+                    <li><a href="#" class="footer__link">Claude</a></li>
+                    <li><a href="#" class="footer__link">Claude Code</a></li>
+                    <li><a href="#" class="footer__link">Pricing</a></li>
+                    <li><a href="#" class="footer__link">Download</a></li>
+                  </ul>
+                </div>
+                <div class="footer__column">
+                  <div class="footer__column-title">Models</div>
+                  <ul class="footer__links">
+                    <li><a href="#" class="footer__link">Opus</a></li>
+                    <li><a href="#" class="footer__link">Sonnet</a></li>
+                    <li><a href="#" class="footer__link">Haiku</a></li>
+                  </ul>
+                </div>
+                <div class="footer__column">
+                  <div class="footer__column-title">Company</div>
+                  <ul class="footer__links">
+                    <li><a href="#" class="footer__link">About</a></li>
+                    <li><a href="#" class="footer__link">Careers</a></li>
+                    <li><a href="#" class="footer__link">Research</a></li>
+                    <li><a href="#" class="footer__link">News</a></li>
+                  </ul>
+                </div>
+                <div class="footer__column">
+                  <div class="footer__column-title">Legal</div>
+                  <ul class="footer__links">
+                    <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                    <li><a href="#" class="footer__link">Terms of Service</a></li>
+                    <li><a href="#" class="footer__link">Usage Policy</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="footer__bottom">
+                <span class="footer__copyright">© 2025 Anthropic PBC</span>
+                <div class="footer__social">
+                  <a href="#" class="footer__social-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </a>
+                  <a href="#" class="footer__social-link">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>背景</span> <code>Slate Dark #191919</code></li>
+                <li><span>内边距</span> <code>3rem</code></li>
+                <li><span>布局</span> <code>4列网格</code></li>
+                <li><span>链接颜色</span> <code>Cloud Light</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">响应式规则</div>
+              <ul class="spec-list">
+                <li><span>≤991px</span> <code>2列布局</code></li>
+                <li><span>≤767px</span> <code>1列布局</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             引用组件 Quote
+             ======================================== -->
+        <section id="quote" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">引用组件</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: About、Careers</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="quote">
+              <p class="quote__text">At Anthropic, we build AI to serve humanity's long-term well-being. While no one can foresee every outcome AI will have on society, we do know that designing powerful technologies requires both bold steps forward and intentional pauses to consider the effects.</p>
+              <div class="quote__author">
+                <div class="quote__avatar"></div>
+                <div>
+                  <div class="quote__name">Dario Amodei</div>
+                  <div class="quote__role">CEO, Anthropic</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             时间线 Timeline
+             ======================================== -->
+        <section id="timeline" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">时间线列表</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: News、Economic Futures</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="timeline">
+              <div class="timeline__item">
+                <div class="timeline__dot"></div>
+                <div class="timeline__date">Dec 05, 2025</div>
+                <div class="timeline__title">Claude Opus 4.5 Released</div>
+                <p class="timeline__description">Introducing the best model in the world for coding, agents, computer use, and enterprise workflows.</p>
+              </div>
+              <div class="timeline__item">
+                <div class="timeline__dot"></div>
+                <div class="timeline__date">Oct 15, 2025</div>
+                <div class="timeline__title">Introducing Haiku 4.5</div>
+                <p class="timeline__description">Our fastest and most cost-efficient model, optimized for real-time applications.</p>
+              </div>
+              <div class="timeline__item">
+                <div class="timeline__dot"></div>
+                <div class="timeline__date">Sep 29, 2025</div>
+                <div class="timeline__title">Introducing Sonnet 4.5</div>
+                <p class="timeline__description">The perfect balance of intelligence, speed, and cost for most use cases.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">样式参数</div>
+              <ul class="spec-list">
+                <li><span>左侧线</span> <code>2px, Ivory Dark</code></li>
+                <li><span>节点</span> <code>10px圆点, Book Cloth</code></li>
+                <li><span>左边距</span> <code>2.5rem</code></li>
+                <li><span>项目间距</span> <code>2rem</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             交互状态 States
+             ======================================== -->
+        <section id="states" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">交互状态</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部组件</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">按钮状态演示</div>
+            <div class="states-grid">
+              <div class="state-item">
+                <button class="btn btn--primary">Default</button>
+                <div class="state-label">默认状态</div>
+              </div>
+              <div class="state-item">
+                <button class="btn btn--primary" style="background-color: var(--swatch--slate-medium); transform: translateY(-1px);">Hover</button>
+                <div class="state-label">悬停状态</div>
+              </div>
+              <div class="state-item">
+                <button class="btn btn--primary" style="outline: 2px solid var(--swatch--focus); outline-offset: 2px;">Focus</button>
+                <div class="state-label">聚焦状态</div>
+              </div>
+              <div class="state-item">
+                <button class="btn btn--primary" disabled>Disabled</button>
+                <div class="state-label">禁用状态</div>
+              </div>
+            </div>
+
+            <div class="demo-label">输入框状态演示</div>
+            <div class="states-grid">
+              <div class="state-item">
+                <input type="text" class="form-input" placeholder="Default" style="width: 120px;">
+                <div class="state-label">默认状态</div>
+              </div>
+              <div class="state-item">
+                <input type="text" class="form-input" value="Focused" style="width: 120px; border-color: var(--swatch--slate-dark); background-color: var(--swatch--white);">
+                <div class="state-label">聚焦状态</div>
+              </div>
+              <div class="state-item">
+                <input type="text" class="form-input form-input--error" value="Error" style="width: 120px;">
+                <div class="state-label">错误状态</div>
+              </div>
+              <div class="state-item">
+                <input type="text" class="form-input" value="Disabled" disabled style="width: 120px;">
+                <div class="state-label">禁用状态</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             终端样式 Terminal
+             ======================================== -->
+        <section id="terminal" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">终端样式</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: Engineering、Developer Docs</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="terminal">
+              <div class="terminal__header">
+                <span class="terminal__dot terminal__dot--red"></span>
+                <span class="terminal__dot terminal__dot--yellow"></span>
+                <span class="terminal__dot terminal__dot--green"></span>
+                <span class="terminal__title">Terminal</span>
+              </div>
+              <div class="terminal__body">
+                <div class="terminal__line">
+                  <span class="terminal__prompt">$ </span>
+                  <span class="terminal__command">pip install anthropic</span>
+                </div>
+                <div class="terminal__line">
+                  <span class="terminal__output">Successfully installed anthropic-0.40.0</span>
+                </div>
+                <div class="terminal__line">
+                  <span class="terminal__prompt">$ </span>
+                  <span class="terminal__command">claude code</span>
+                </div>
+                <div class="terminal__line">
+                  <span class="terminal__output">Welcome to Claude Code! Type /help for commands.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             表格组件 Table
+             ======================================== -->
+        <section id="table" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">表格组件</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: Transparency、Docs</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>属性</th>
+                    <th>Opus</th>
+                    <th>Sonnet</th>
+                    <th>Haiku</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Context Window</td>
+                    <td>200K tokens</td>
+                    <td>200K tokens</td>
+                    <td>200K tokens</td>
+                  </tr>
+                  <tr>
+                    <td>Max Output</td>
+                    <td>32K tokens</td>
+                    <td>16K tokens</td>
+                    <td>8K tokens</td>
+                  </tr>
+                  <tr>
+                    <td>Speed</td>
+                    <td>Standard</td>
+                    <td>Fast</td>
+                    <td>Fastest</td>
+                  </tr>
+                  <tr>
+                    <td>Best For</td>
+                    <td>Complex tasks</td>
+                    <td>Balanced</td>
+                    <td>Quick tasks</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             公告条 Announcement
+             ======================================== -->
+        <section id="announcement" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">公告条</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: 首页顶部</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="announcement-bar">
+              <span>🎉 Claude Opus 4.5 is now available!</span>
+              <a href="#" class="announcement-bar__link">Read announcement →</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             标签页 Tabs
+             ======================================== -->
+        <section id="tabs" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">标签页</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: Transparency、Docs</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="tabs">
+              <button class="tab tab--active">Model Report</button>
+              <button class="tab">System Trust</button>
+              <button class="tab">Voluntary Commitments</button>
+            </div>
+            <div style="padding: var(--space--4); background-color: var(--swatch--ivory-light); border-radius: var(--radius--main);">
+              <p style="color: var(--swatch--slate-light);">Tab content area - displays content based on selected tab.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             折叠面板 Accordion
+             ======================================== -->
+        <section id="accordion" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">折叠面板</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: FAQ、Docs</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="accordion">
+              <div class="accordion__item accordion__item--open">
+                <div class="accordion__header">
+                  <span class="accordion__title">What is Claude?</span>
+                  <svg class="accordion__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+                <div class="accordion__content">
+                  Claude is an AI assistant made by Anthropic to be helpful, harmless, and honest.
+                </div>
+              </div>
+              <div class="accordion__item">
+                <div class="accordion__header">
+                  <span class="accordion__title">How do I get started?</span>
+                  <svg class="accordion__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <div class="accordion__item">
+                <div class="accordion__header">
+                  <span class="accordion__title">What are the pricing options?</span>
+                  <svg class="accordion__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             数据统计 Stats
+             ======================================== -->
+        <section id="stats" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">数据统计卡片</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: Economic Futures、About</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="grid-demo grid-demo--4">
+              <div class="card card--bordered stat-card">
+                <div class="stat-card__value">$183B</div>
+                <div class="stat-card__label">Valuation</div>
+              </div>
+              <div class="card card--bordered stat-card">
+                <div class="stat-card__value">1,000+</div>
+                <div class="stat-card__label">Employees</div>
+              </div>
+              <div class="card card--bordered stat-card">
+                <div class="stat-card__value">200K</div>
+                <div class="stat-card__label">Context Window</div>
+              </div>
+              <div class="card card--bordered stat-card">
+                <div class="stat-card__value">159</div>
+                <div class="stat-card__label">Countries</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             分隔线 Dividers
+             ======================================== -->
+        <section id="dividers" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">分隔线</h2>
+            <span class="component-priority extended">拓展</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">默认分隔线</div>
+            <div class="divider"></div>
+
+            <div class="demo-label">粗分隔线</div>
+            <div class="divider divider--thick"></div>
+
+            <div class="demo-label">强调分隔线</div>
+            <div class="divider divider--accent"></div>
+          </div>
+        </section>
+
+        <!-- ========================================
+             网格布局 Grid
+             ======================================== -->
+        <section id="grid" class="component-section">
+          <div class="component-header">
+            <h2 class="component-title">网格布局</h2>
+            <span class="component-priority required">必用</span>
+            <span class="component-reuse">复用: 全部页面</span>
+          </div>
+
+          <div class="component-demo">
+            <div class="demo-label">2列网格</div>
+            <div class="grid-demo grid-demo--2" style="margin-bottom: 2rem;">
+              <div class="grid-item">Col 1</div>
+              <div class="grid-item">Col 2</div>
+            </div>
+
+            <div class="demo-label">3列网格</div>
+            <div class="grid-demo grid-demo--3" style="margin-bottom: 2rem;">
+              <div class="grid-item">Col 1</div>
+              <div class="grid-item">Col 2</div>
+              <div class="grid-item">Col 3</div>
+            </div>
+
+            <div class="demo-label">4列网格</div>
+            <div class="grid-demo grid-demo--4">
+              <div class="grid-item">Col 1</div>
+              <div class="grid-item">Col 2</div>
+              <div class="grid-item">Col 3</div>
+              <div class="grid-item">Col 4</div>
+            </div>
+          </div>
+
+          <div class="component-specs">
+            <div class="spec-card">
+              <div class="spec-title">网格参数</div>
+              <ul class="spec-list">
+                <li><span>栅格列数</span> <code>12列</code></li>
+                <li><span>间距 (gutter)</span> <code>2rem (32px)</code></li>
+                <li><span>最大宽度</span> <code>89.5rem (1432px)</code></li>
+                <li><span>边距</span> <code>64px</code></li>
+              </ul>
+            </div>
+            <div class="spec-card">
+              <div class="spec-title">响应式规则</div>
+              <ul class="spec-list">
+                <li><span>≤991px</span> <code>4列 → 2列</code></li>
+                <li><span>≤767px</span> <code>2列 → 1列</code></li>
+                <li><span>间距缩小</span> <code>1.5rem</code></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- 回到顶部按钮 -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
+  <script>
+    // 侧边栏导航高亮
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.component-section');
+
+    // 滚动监听
+    window.addEventListener('scroll', () => {
+      let current = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 100) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('href') === '#' + current) {
+          item.classList.add('active');
+        }
+      });
+
+      // 回到顶部按钮显示/隐藏
+      const backToTop = document.getElementById('backToTop');
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+
+    // 回到顶部
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 移动端菜单
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('visible');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+    });
+
+    // 点击导航项后关闭移动端菜单
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 991) {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('visible');
+        }
+      });
+    });
+
+    // 折叠面板交互
+    const accordionHeaders = document.querySelectorAll('.accordion__header');
+    accordionHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        item.classList.toggle('accordion__item--open');
+      });
+    });
+  </script>
+</body>
+</html>
